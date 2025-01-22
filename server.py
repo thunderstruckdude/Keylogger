@@ -1,7 +1,7 @@
 import socket
 
 # Define the host and port
-HOST = "0.0.0.0"  # Listen on all interfaces
+HOST = "127.0.0.1"  # Listen on all interfaces
 PORT = 8080       
 
 def start_server():

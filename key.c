@@ -1,12 +1,15 @@
-#include <windows.h>
 #include <winsock2.h>
+#include <winsock.h>
+#include <windows.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
 
+#pragma comment(lib, "Ws2_32.lib")
+
 //server details
-#define SERVER_IP "0.tcp.ngrok.io"  
+#define SERVER_IP "127.0.0.1" 
 #define SERVER_PORT 8080           
 
 // Networking variables
